@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Temperature Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .converter-container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 300px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="converter-container">
+    <h2>Temperature Converter</h2>
+    
+    <input type="text" id="tempInput" placeholder="Enter temperature" />
+    
+    <select id="unitSelect">
+      <option value="C">Celsius</option>
+      <option value="F">Fahrenheit</option>
+      <option value="K">Kelvin</option>
+    </select>
+
+    <button onclick="convertTemp()">Convert</button>
+
+    <div class="result" id="result"></div>
+    <div class="error" id="error"></div>
+  </div>
+
+  <script>
+    function convertTemp() {
+      const input = document.getElementById('tempInput').value.trim();
+      const unit = document.getElementById('unitSelect').value;
+      const resultDiv = document.getElementById('result');
+      const errorDiv = document.getElementById('error');
+
+      // Reset messages
+      resultDiv.textContent = '';
+      errorDiv.textContent = '';
+
+      const temp = parseFloat(input);
+
+      if (isNaN(temp)) {
+        errorDiv.textContent = "Please enter a valid number.";
+        return;
+      }
+
+      let convertedTemps = {};
+
+      switch (unit) {
+        case 'C':
+          convertedTemps = {
+            Fahrenheit: (temp * 9/5 + 32).toFixed(2),
+            Kelvin: (temp + 273.15).toFixed(2)
+          };
+          resultDiv.textContent = `${temp}°C = ${convertedTemps.Fahrenheit}°F, ${convertedTemps.Kelvin}K`;
+          break;
+
+        case 'F':
+          convertedTemps = {
+            Celsius: ((temp - 32) * 5/9).toFixed(2),
+            Kelvin: (((temp - 32) * 5/9) + 273.15).toFixed(2)
+          };
+          resultDiv.textContent = `${temp}°F = ${convertedTemps.Celsius}°C, ${convertedTemps.Kelvin}K`;
+          break;
+
+        case 'K':
+          if (temp < 0) {
+            errorDiv.textContent = "Kelvin cannot be below 0.";
+            return;
+          }
+          convertedTemps = {
+            Celsius: (temp - 273.15).toFixed(2),
+            Fahrenheit: ((temp - 273.15) * 9/5 + 32).toFixed(2)
+          };
+          resultDiv.textContent = `${temp}K = ${convertedTemps.Celsius}°C, ${convertedTemps.Fahrenheit}°F`;
+          break;
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+      <script src="script.js"></script>
+  </body>
+</html>
